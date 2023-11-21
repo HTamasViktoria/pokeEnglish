@@ -1,12 +1,32 @@
 import mongoose from 'mongoose'
+import express from 'express'
+import Word from './model/Word.js'
 import User from './model/User.js'
-import express from "express"
+
 
 mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/users")
 
 const app = express()
 app.use(express.json())
 
+
+
+
+app.post('/api/addnew', (req, res) => {
+    console.log("kérés érkezett")
+    Word.create({
+        english: req.body.english,
+        hungarian: req.body.hungarian,
+        topic: req.body.topic,
+        createdAt: req.body.date,
+    })
+        .then(word => {
+            console.log(word);
+            res.send(word)
+        })
+})
+
+app.listen(3000, () => console.log("Server is listening on port 3000"))
 app.post('/api/users', async (req, res) => {
     try {
         const name = req.body.name
@@ -47,4 +67,5 @@ app.post('/api/login', async (req, res) => {
 
 
 
-app.listen(3000, () => console.log('Server started on port 3000'))
+
+
