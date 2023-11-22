@@ -90,7 +90,7 @@ const Quiz = () => {
             setCorrectOverall(allCorrect);
     
             if (allCorrect) {
-                const pokemonData = { pokemon: topics[0].pokemon };
+                const pokemonData = { pokemon: topics[0].url };
                 fetch('/api/inventory', {
                     method: 'POST',
                     headers: {
@@ -141,7 +141,7 @@ const Quiz = () => {
                         {correctOverall ? (
                             <>
                             <p>Congratulations you won:</p>
-                            <img src={topics[0].pokemon}/>
+                            <img src={topics[0].url}/>
                             <button onClick={selectTask} >Tasks</button>
                             </>
                         ) : (
