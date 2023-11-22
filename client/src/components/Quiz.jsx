@@ -3,7 +3,7 @@ import NavBar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 
 
-const Animal = (props) => {
+const Quiz = () => {
     const [tasks, setTasks] = useState([])
     const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     const [completed, setCompleted] = useState(false)
@@ -22,6 +22,11 @@ const Animal = (props) => {
         'Caterpillar', 'Dragonfly', 'Spider', 'Bat', 'Cheetah', 'Jaguar',
         'Leopard', 'Hippopotamus'
     ]
+
+    const sportNames = [ "Basketball", "Baseball", "Tennis", "Swimming", "Gymnastics", "Volleyball",
+        "Golf", "Running", "Skating", "Skiing", "Skating", "Table Tennis", "Badminton", "Karate", "Surfing",
+        "Skateboarding", "Archery", "Softball", "Cricket", "Horseback", "Judo", "Fencing", "Trampoline",
+        "Canoeing", "Wrestling", "Climbing", "Frisbee", "TaeKwonDo"]
    
 
     function getRandomElements(array, animal, n) {
@@ -44,12 +49,12 @@ const Animal = (props) => {
         fetchData();
     }, []);
 
-    const handleAnimalClick = (clickedAnimal, correctEnglish) => {
-        const isCorrect = clickedAnimal === correctEnglish;
+    const handleClick = (clicked, correctEnglish) => {
+        const isCorrect = clicked === correctEnglish;
 
         setAnswers((prevAnswers) => [
             ...prevAnswers,
-            { clickedAnimal, correctEnglish, isCorrect },
+            { clicked, correctEnglish, isCorrect },
         ]);
 
         setCurrentTaskIndex((prevIndex) => prevIndex + 1);
@@ -60,10 +65,6 @@ const Animal = (props) => {
                 setCorrectOverall(allCorrect);
                 setCompleted(true);
                 setCurrentTaskIndex(0);
-                
-
-
-
                 return prevAnswers;
             });
         }
@@ -161,7 +162,7 @@ const Animal = (props) => {
                                 <div
                                     key={index}
                                     className="animal"
-                                    onClick={() => handleAnimalClick(animal, currentTask?.english)}
+                                    onClick={() => handleClick(animal, currentTask?.english)}
                                 >
                                     <p>{animal}</p>
                                 </div>
@@ -174,4 +175,4 @@ const Animal = (props) => {
     );
 };
 
-export default Animal;
+export default Quiz;

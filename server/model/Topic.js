@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const { Schema, model } = mongoose
 const topicSchema = new Schema({
-    topic: String,
+    name: String,
     url: String,
     createdAt: Date
 })

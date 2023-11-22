@@ -26,8 +26,8 @@ const Tasks = () => {
     fetchData();
   }, []);
 
-  const selectTask = (topic) => {
-    navigate(`/home/Tasks/${topic}`);
+  const selectTask = () => {
+    navigate(`/home/Tasks/Quiz`);
   };
 
 
@@ -40,16 +40,16 @@ const Tasks = () => {
   };
 
   const topicList = topics.map((topic, index) => {
-    const isCompleted = inventory.some((item) => item.pokemon === topic.pokemon);
+    const isCompleted = inventory.some((item) => item.pokemon === topic.url);
     return (
       <div
         key={index}
         className={`selectTopic ${isCompleted ? "completed" : ""}`}
-        onClick={() => selectTask(topic.topic)}
+        onClick={() => selectTask(topic.name)}
       >
-        <h2>{topic.topic}</h2>
+        <h2>{topic.name}</h2>
         reward:
-        <img src={topic.pokemon} alt={`Pokemon ${index}`} />
+        <img src={topic.url} alt={`Pokemon ${index}`} />
         {isCompleted && <span className="completed-label">Completed</span>}
       </div>
     );
