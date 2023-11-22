@@ -1,7 +1,16 @@
+import React from "react"
+import NavBar from "./Navbar"
+
 const AdminStats = () => {
 
     return (
-        <div>I am adminstats</div>
+        <>
+            <NavBar/>
+            <div>   
+                I am adminstats
+            </div>
+            
+        </>
     )
 }
 
