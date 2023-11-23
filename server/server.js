@@ -93,6 +93,18 @@ app.get('/api/messages', (req, res) => {
         .catch(error => console.error(error))
 })
 
+app.delete('/api/message/:id', async (req, res) => {
+    const messageId = req.params.id;
+    try {
+        const deletedMessage = await Message.findByIdAndDelete(messageId);
+        res.send({ message: 'Message deleted successfully' });
+        console.log(deletedMessage);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
 app.post('/api/reward', (req, res) => {
     Reward.create({
         text: req.body.text,

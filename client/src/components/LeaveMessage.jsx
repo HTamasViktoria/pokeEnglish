@@ -45,15 +45,17 @@ const LeaveMessage = () => {
 
     return (<>
         <NavBar/>
-        <div>Here you can leave a message to your child. Either you'd like to tell them what to learn/repet,
+        <div className='middle'>
+        <div className='cim' >Here you can leave a message to your child. Either you'd like to tell them what to learn/repet,
             either you just want to encourage them, we give you place for this.
         </div>
-        {messages.map((message) => <div key={message._id}>{message.text}</div>)}
+        {messages.map((message) => <div className='msg' key={message._id}>{message.text}</div>)}
         <form onSubmit={messageSubmit}>
             <label>Message:
                 <input type="text" value={actualMessage} onChange={(e) => setActualMessage(e.target.value)} />
             </label>
-            <button type="submit">Submit</button></form>
+            <button type="submit" id="btn" >Submit</button></form>
+        </div>
     </>
     )
 

@@ -77,21 +77,21 @@ const EditExisting = () => {
         }
     }
 
-    return (isEditing ? (<div>{words.map((word) => <form id={word._id} onSubmit={editSubmit} key={word._id}>
+    return (isEditing ? (<div>{words.map((word) => <form id={word._id} onSubmit={editSubmit} key={word._id} className='topicForm' >
         <input id={word.english} placeholder={word.hungarian} onChange={hungarianHandler} /> -
         <input id={word.hungarian} placeholder={word.english} onChange={englishHandler} />
-        <button type="submit">Submit</button>
+        <button type="submit" id="btn" className='move'>Submit</button>
     </form>)}
-        <p>or add a new word</p>
-        <form className='wordForm' onSubmit={handleSubmitNew}>
+        <p className='txt' >or add a new word</p>
+        <form className='topicForm' onSubmit={handleSubmitNew}>
             <input id='newWord' placeholder="hungarian" onChange={(e) => setHungarian(e.target.value)} /> -
             <input id='newWord' placeholder="english" onChange={(e) => setEnglish(e.target.value)} />
-            <button type="submit">Submit</button>
+            <button type="submit" id='btn' className='move'>Submit</button>
         </form>
-        <div><img src={url} /></div>
-    </div>) : (<div>
+        <div><img src={url} className='Preward' /></div>
+    </div>) : (<div className='pokeContainer' >
         {allTopics.map((topic, index) =>
-            <div key={index}>
+            <div key={index} className='editP' >
                 <div key={topic.name}>
                     {topic.name}
                 </div>

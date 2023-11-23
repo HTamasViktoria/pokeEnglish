@@ -1,3 +1,5 @@
+
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -12,7 +14,7 @@
 }
 
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #646cff);
 }
 
 .logo.react:hover {
@@ -50,16 +52,28 @@
   position: fixed;
   top: 0;
   left: 0;
-  /* A bal felső sarokhoz rögzítve */
   right: 0;
-  /* A jobb felső sarokhoz rögzítve */
   width: 100%;
-  /* 100% szélesség */
+  background-color: #333; 
+  padding: 10px; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  padding: 10px 15px; 
+  border-radius: 5px; 
+  transition: background-color 0.3s ease; 
+}
+
+.navbar a:hover {
+  background-color: #555; 
 }
 
 .selectTopic{
   width:170px;
-  height: 170px;
+  height: 190px;
   border: 1px solid #ccc;
   padding: 16px;
   margin: 10px;
@@ -72,6 +86,7 @@
   transition: transform 0.3s;
   position: relative;
   top: -50px;
+  cursor: pointer;
 }
 
 .selectTopic:hover{
@@ -79,10 +94,12 @@
   transform: scale(1.05);
 }
 
-.topics{
+.topics {
   position: relative;
-  top:-220px;
-  left:36%
+  top: -220px;
+  left: 50%; /* Center the element horizontally */
+  transform: translateX(-50%); /* Adjust to center properly */
+  text-align: center; /* Center the text inside */
 }
 
 .animals-container {
@@ -158,7 +175,7 @@
 }
 
 .messages {
-  width: 850px;
+  width: 600px;
   height: 40px;
   border: 1px solid #ccc;
   margin: 10px;
@@ -184,3 +201,318 @@
 .close:hover {
   background-color: #cc0000; 
 }
+
+.messages-container {
+  width: 660px;
+  height: 150px;
+  overflow-y: auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50px;
+}
+
+.inventorybtn{
+  position: relative;
+  left: 45%;
+  margin-right: 10px;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inventorybtn:hover {
+  background-color: #45a049;
+}
+
+.signup-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.register-btn {
+  margin-right: 10px;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background-color: #45a049;
+}
+
+.login-link {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: #4caf50;
+}
+
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.login-btn {
+  margin-right: 10px;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #45a049;
+}
+
+.register-link {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: #4caf50;
+}
+
+.intro-text {
+  margin-bottom: 20px;
+  position: relative;
+  bottom: 120px;
+  font-size: 25px;
+}
+
+.action-button {
+  position: relative;
+  left: 36%;
+  margin-right: 10px;
+  padding: 15px; 
+  font-size: 20px; 
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.action-button:hover {
+  background-color: #45a049;
+}
+
+#btn{
+  margin-right: 10px;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#btn:hover {
+  background-color: #45a049;
+}
+
+.pokeContainer{
+  display: flex;
+  justify-content: space-evenly;
+  gap: 50px;
+}
+
+.editP{
+  font-size: 20px;
+  background-color: #45a04900;
+}
+
+.editP img {
+  width: 150px; 
+  height: 150px; 
+  image-rendering: pixelated
+}
+
+.txt{
+  font-size: 20px;
+  position: relative;
+  left: 25%;
+}
+
+.move{
+  position: relative;
+  left: 10px;
+}
+
+.topicForm{
+  margin: 10px;
+}
+
+.Preward{
+  width: 150px; 
+  height: 150px; 
+  image-rendering: pixelated;
+  position: relative;
+  left: 25%;
+}
+
+.nTopic {
+  position: absolute;
+  transform: translateX(140%);
+  top:100px;
+}
+
+.pokeList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 10px;
+}
+
+.poke{
+  width:100px;
+  height: 100px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #1100ff2f;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.poke:hover{
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.moveIt{
+  font-size: 25px;
+  position: relative;
+  left:46%;
+}
+
+.selectedP{
+  background-color: #45a049;
+}
+
+.Tname{
+  position: relative;
+  left:40%;
+  top:-30px;
+  font-size: 20px;
+  
+}
+
+.txtt{
+  font-size: 25px;
+  position: relative;
+  top:-150px
+}
+
+.addingNew{
+  text-align: center;
+  position: relative;
+  bottom:80px;
+}
+
+.pkmn{
+  width: 150px; 
+  height: 150px; 
+  image-rendering: pixelated;
+}
+
+.frm{
+  font-size: 20px;
+}
+
+.rslt{
+  text-align: center;
+}
+
+.rsltp{
+  position: relative;
+  left: 37%;
+  width: 150px; 
+  height: 150px; 
+  image-rendering: pixelated;
+}
+
+.rsltb{
+  position: relative;
+  left: 17%;
+}
+
+.rsltc{
+  position: relative;
+  left: 37%
+}
+
+.middle{
+  text-align: center;
+}
+
+.cim{
+  font-size: 25px;
+  position: relative;
+  bottom:250px
+}
+
+.msg{
+  position: relative;
+  top:-100px;
+}
+
+.ok{
+  position: relative;
+  top:40px;
+  right:220px
+}
+
+
+
+
+

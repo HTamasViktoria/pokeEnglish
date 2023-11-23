@@ -28,19 +28,19 @@ const Addnew = (props) => {
     }
 
     return (<>
-        {topicAdded ? (<><NewTopicsWords topic={topic} pokemon={chosenPoke} /></>) : (<><h1>Addnew</h1>
+        {topicAdded ? (<><NewTopicsWords topic={topic} pokemon={chosenPoke} /></>) : (<><h1 className="nTopic" >Add new topic</h1>
             <form onSubmit={topicSubmitHandler}>
-                <label>Topic neve:
+                <label className='Tname' >Topic name:
                     <input type="text" onChange={(e) => setTopic(e.target.value)} />
                 </label>
-                <label>Ez a pokémon jár érte: <div> {props.images.map((image) =>
-                (<div id={image} key={image}>
+                <label><div className='pokeList' > {props.images.map((image, index) =>
+                (<div id={image} key={index} className={`poke ${chosenPoke === image ? 'selectedP' : ''}`} >
                     <img onClick={(e) => setChosenPoke(e.target.id)} id={image} src={image} />
                 </div>))}
                 </div>
                 </label>
 
-                <button type="submit">Topic hozzáadása</button></form>
+                <button type="submit" id="btn" className='moveIt'>Add Topic</button></form>
         </>)}</>
     )
 }

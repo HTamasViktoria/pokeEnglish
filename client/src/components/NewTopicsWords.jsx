@@ -48,23 +48,23 @@ const NewTopicsWords = (props) => {
 
     return (
         <>
-            <div>
+            <div className='txtt' >
                 Here you can fill your freshly created topic with words. We do suggest that one topic should have at least 20 words.
             </div>
-            <div>
-                <h2>Topic: {props.topic}</h2>
+            <div className='addingNew' >
+                <h2 className='txttt' >Topic: {props.topic}</h2>
                 <div>
-                    <img src={props.pokemon} />
+                    <img className='pkmn' src={props.pokemon} />
                 </div>
-                {wordsOfTopic.map((word) => <div key={word}>{word.english} - {word.hungarian}</div>)}
+                {wordsOfTopic.map((word) => <div  key={word}>{word.english} - {word.hungarian}</div>)}
                 {!addingNewWord ? (
-                    <button onClick={() => setAddingNewWord(true)}>+ Add new word to this topic</button>
-                ) : (<><form onSubmit={wordSubmitHandler}>
+                    <button onClick={() => setAddingNewWord(true)} id="btn" >+ Add new word to this topic</button>
+                ) : (<><form className="frm" onSubmit={wordSubmitHandler}>
                     <label>English: <input value={english} onChange={(e) => setEnglish(e.target.value)} type="text" />
                     </label>
                     <label>Hungarian: <input value={hungarian} onChange={(e) => setHungarian(e.target.value)} type="text" />
                     </label>
-                    <button type="submit">Add</button>
+                    <button type="submit" id='btn' >Add</button>
                 </form></>)}
             </div>
         </>

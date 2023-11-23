@@ -19,14 +19,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Admin />} />
-          <Route path="/home/AddNewWords" element={<AddNewWords />} />
-          <Route path="/home/AdminStats" element={<AdminStats />} />
-          <Route path="/home/LeaveMessage" element={<LeaveMessage />} />
-          <Route path="/home/Rewards" element={<Rewards />} />
-          <Route path="/home/Tasks" element={<Tasks />} />
-          <Route path="/home/Tasks/Quiz/:selectedTopic" element={<Quiz />} />
-          <Route path="/home/Tasks/Answer/:selectedTopic" element={<Answer />} />
+          <Route path="/home" element={<Tasks />} />
+          <Route path="/AddNewWords" element={<AddNewWords />} />
+          <Route path="/AdminStats" element={<AdminStats />} />
+          <Route path="/LeaveMessage" element={<LeaveMessage />} />
+          <Route path="/Rewards" element={<Rewards />} />
+          <Route path="/Tasks" element={<Tasks />} />
+          <Route path="/Tasks/Quiz/:selectedTopic" element={<Quiz />} />
+          <Route path="/Tasks/Answer/:selectedTopic" element={<Answer />} />
         </Routes>
       </BrowserRouter>
 

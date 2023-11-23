@@ -75,7 +75,7 @@ const Answear = () => {
             });
             if (response.ok) {
                 console.log('Results successfully submitted.');
-                navigate(`/home/Tasks/`)
+                navigate(`/home`)
             } else {
                 console.error('Failed to submit results. Server returned:', response.status, response.statusText);
             }
@@ -92,7 +92,7 @@ const Answear = () => {
                 <>
                     <div>
                         You finished this test. Good answers: {numOfTrueAnswers}, wrong answers: {numOfFalseAnswers}
-                        <button onClick={OKHandler}>OK</button>
+                        <button onClick={OKHandler} id="btn" className="ok">OK</button>
                     </div>
                 </>
             ) : (

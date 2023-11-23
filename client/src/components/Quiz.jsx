@@ -138,7 +138,7 @@ const Quiz = () => {
     }, [completed, answers, topics]);
 
     const selectTask = () => {
-        navigate(`/home/Tasks/`);
+        navigate(`/home`);
     };
 
     const currentTask = tasks[currentTaskIndex];
@@ -148,8 +148,8 @@ const Quiz = () => {
             {completed ? (
                 <>
                     <NavBar />
-                    <div>
-                        <h2>Results</h2>
+                    <div >
+                        <h2 className="rslt" >Results</h2>
                         {answers.map((answer, index) => (
                             <div key={index} className={`answer ${answer.isCorrect ? "correct" : "wrong"}`}>
                                 <p>
@@ -160,14 +160,14 @@ const Quiz = () => {
                         ))}
                         {correctOverall ? (
                             <>
-                                <p>Congratulations you won:</p>
-                                <img src={reward.url}/>
-                                <button onClick={selectTask} >Tasks</button>
+                                <p className="rslt" >Congratulations you won:</p>
+                                <img className="rsltp" src={reward.url}/>
+                                <button onClick={selectTask} className="rsltb" id="btn" >Tasks</button>
                             </>
                         ) : (
                             <>
-                                <button onClick={handleRetry}>Retry</button>
-                                <button onClick={selectTask} >Tasks</button>
+                                <button onClick={handleRetry} className="rsltc" id="btn"  >Retry</button>
+                                <button onClick={selectTask} className="rsltc" id="btn"  >Tasks</button>
                             </>
                         )}
                     </div>

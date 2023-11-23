@@ -13,7 +13,7 @@ const Word = (props) => {
     return (<div>
         <form onSubmit={handleSubmit}>
             <label>{props.word.hungarian}: <input type="text" onChange={(e) => { setEnglishSolution(e.target.value) }} /></label>
-            <button>Submit</button>
+            <button id='btn' >Submit</button>
         </form>
     </div>)
 }

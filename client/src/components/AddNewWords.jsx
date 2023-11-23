@@ -72,21 +72,35 @@ const AddNewWords = () => {
 
 
 
+
     return (
         <>
-        <NavBar/>
-            <div>Here you can add words to your child's learning list.
-                It's best to neatly copy the words from their dictionary that they need to learn. We know this might be a big task,
-                but don't worry – you only need to enter the words once, and the app will remember them from then on.</div>
+            <NavBar />
+            {!editExisting && !addnew && (
+                <div className="intro-text">
+                    Here you can add words to your child's learning list.
+                    It's best to neatly copy the words from their dictionary that they need to learn. We know this might be a big task,
+                    but don't worry – you only need to enter the words once, and the app will remember them from then on.
+                </div>
+            )}
 
-            {editExisting === true ? (<EditExisting />) :
-                addnew === true ? (<Addnew images={pokeImages} />) :
-                    (<> <button onClick={() => setEditExisting(true)}>Meglévő témakörök</button>
-                        <button onClick={() => setAddnew(true)}>Új témakör hozzáadása</button></>)}
-
+            {editExisting ? (
+                <EditExisting />
+            ) : addnew ? (
+                <Addnew images={pokeImages} />
+            ) : (
+                <>
+                    <button className="action-button" onClick={() => setEditExisting(true)}>
+                        Existing topics
+                    </button>
+                    <button className="action-button" onClick={() => setAddnew(true)}>
+                        Add new topic
+                    </button>
+                </>
+            )}
         </>
-    )
+    );
+};
 
-}
 
 export default AddNewWords

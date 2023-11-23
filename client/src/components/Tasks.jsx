@@ -42,9 +42,9 @@ const Tasks = () => {
     const isCompleted = inventory.find((item) => item.name === selectedTopic);
   
     if (isCompleted && isCompleted.name === selectedTopic) {
-      navigate(`/home/Tasks/Answer/${selectedTopic}`);
+      navigate(`/Tasks/Answer/${selectedTopic}`);
     } else {
-      navigate(`/home/Tasks/Quiz/${selectedTopic}`);
+      navigate(`/Tasks/Quiz/${selectedTopic}`);
     }
   };
 
@@ -78,7 +78,6 @@ const Tasks = () => {
     return (
       <div key={index} className={`selectTopic ${isCompleted ? "completed" : ""}`} onClick={() => selectTask(topic.name)}>
         <h2>{topic.name}</h2>
-        reward:
         <img src={topic.url} alt={`Pokemon ${index}`} />
         {isCompleted && <span className="completed-label">Completed</span>}
       </div>
@@ -96,21 +95,25 @@ const Tasks = () => {
               <img src={item.pokemon} alt={`Pokemon ${index}`} />
             </div>
           ))}
-          <button onClick={goBack}>Go Back</button>
+          <button onClick={goBack} id="btn" >Go Back</button>
         </>
       ) : (
-        <div>
+        <div> 
+          <div className="messages-container">
           {messages.map((message, index) => (
             <div className="messages" key={index}>
               <p>{message.text}</p>
               <button className="close" onClick={() => handleDelete(message._id)}>x</button>
             </div>
           ))}
-          <div>
-            <h1 className="topics">Topics</h1>
-            {topicList}
           </div>
-          <button onClick={handleInventory}>Inventory</button>
+          <h1 className="topics">Topics</h1>
+          <div>
+            <div className="topicsList" >
+              {topicList}
+            </div>
+          </div>
+          <button className="inventorybtn" onClick={handleInventory}>Inventory</button>
         </div>
       )}
     </>

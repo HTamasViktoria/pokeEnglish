@@ -29,25 +29,25 @@ const Signup = () => {
     }
 
     return (
-        <div>
-            <h2>Register</h2>
-            <form onSubmit={handleSubmit} >
+        <div className="signup-container">
+            <h2 className="register-title">Register</h2>
+            <form className="register-form" onSubmit={handleSubmit} >
                 <div>
-                    <label>Name</label>
-                    <input type="text" placeholder='Enter Name here' onChange={(e) => setName(e.target.value)} />
+                    <label htmlFor="name">Name</label>
+                    <input type="text" id="name" className="register-input" placeholder='Enter Name here' onChange={(e) => setName(e.target.value)} />
                 </div>
                 <div>
-                    <label>Email</label>
-                    <input type="email" placeholder='Enter Email here' onChange={(e) => setEmail(e.target.value)} />
+                    <label htmlFor="email">Email</label>
+                    <input type="email" id="email" className="register-input" placeholder='Enter Email here' onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div>
-                    <label>Password</label>
-                    <input type="password" placeholder='Enter Password here' onChange={(e) => setPassword(e.target.value)} />
+                    <label htmlFor="password">Password</label>
+                    <input type="password" id="password" className="register-input" placeholder='Enter Password here' onChange={(e) => setPassword(e.target.value)} />
                 </div>
-                <button type="submit">Register</button>
+                <button className="register-btn" type="submit">Register</button>
             </form>
             <p>Already have an Account?</p>
-            <Link to='/login' >Login</Link>
+            <Link className="login-link" to='/login' >Login</Link>
         </div>
     )
 }
