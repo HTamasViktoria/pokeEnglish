@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./Navbar";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, useParams } from "react-router-dom";
+
+
 
 
 const Quiz = () => {
+    const { selectedTopic } = useParams()
+
     const [tasks, setTasks] = useState([])
     const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     const [completed, setCompleted] = useState(false)
@@ -23,11 +28,11 @@ const Quiz = () => {
         'Leopard', 'Hippopotamus'
     ]
 
-    const sportNames = [ "Basketball", "Baseball", "Tennis", "Swimming", "Gymnastics", "Volleyball",
+    const sportNames = ["Basketball", "Baseball", "Tennis", "Swimming", "Gymnastics", "Volleyball",
         "Golf", "Running", "Skating", "Skiing", "Skating", "Table Tennis", "Badminton", "Karate", "Surfing",
         "Skateboarding", "Archery", "Softball", "Cricket", "Horseback", "Judo", "Fencing", "Trampoline",
         "Canoeing", "Wrestling", "Climbing", "Frisbee", "TaeKwonDo"]
-   
+
 
     function getRandomElements(array, animal, n) {
         const shuffledArray = array.slice().sort(() => 0.5 - Math.random());
@@ -39,7 +44,7 @@ const Quiz = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`/api/words/animal`);
+            const response = await fetch(`/api/words/${selectedTopic}`);
             const data = await response.json();
             setTasks(data);
             const hungarianNamesArray = data.map((task) => task.hungarian);
@@ -88,7 +93,7 @@ const Quiz = () => {
         if (completed) {
             const allCorrect = answers.every((answer) => answer.isCorrect);
             setCorrectOverall(allCorrect);
-    
+
             if (allCorrect) {
                 const pokemonData = { pokemon: topics[0].url };
                 fetch('/api/inventory', {
@@ -98,15 +103,15 @@ const Quiz = () => {
                     },
                     body: JSON.stringify(pokemonData),
                 })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log('POST request successful', data);
-                })
-                .catch((error) => {
-                    console.error('Error making POST request', error);
-                });
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log('POST request successful', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error making POST request', error);
+                    });
             }
-    
+
             setCompleted(true);
             setCurrentTaskIndex(0);
         }
@@ -114,7 +119,7 @@ const Quiz = () => {
 
     const selectTask = () => {
         navigate(`/home/Tasks/`);
-      };
+    };
 
 
 
@@ -140,9 +145,9 @@ const Quiz = () => {
                         ))}
                         {correctOverall ? (
                             <>
-                            <p>Congratulations you won:</p>
-                            <img src={topics[0].url}/>
-                            <button onClick={selectTask} >Tasks</button>
+                                <p>Congratulations you won:</p>
+                                <img src={topics[0].url} />
+                                <button onClick={selectTask} >Tasks</button>
                             </>
                         ) : (
                             <>

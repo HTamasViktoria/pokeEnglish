@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 
+
+
+
 const Tasks = () => {
+
+
+
   const [topics, setTopics] = useState([]);
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
@@ -26,8 +32,17 @@ const Tasks = () => {
     fetchData();
   }, []);
 
-  const selectTask = () => {
-    navigate(`/home/Tasks/Quiz`);
+
+  const selectTask = (selectedTopic) => {
+    const isCompleted = topics.find((topic) => inventory.some((item) => item.pokemon === topic.url));
+
+    console.log(isCompleted);
+
+    if (isCompleted.name == selectedTopic) {
+      navigate(`/home/Tasks/Answear/${selectedTopic}`);
+    } else {
+      navigate(`/home/Tasks/Quiz/${selectedTopic}`);
+    }
   };
 
 
@@ -55,30 +70,30 @@ const Tasks = () => {
     );
   });
 
-    return (
+  return (
+    <>
+      <NavBar />
+      {isInventory ? (
         <>
-            <NavBar />
-            {isInventory ? (
-                <>
-                    <h2>Inventory</h2>
-                    {inventory.map((item, index) => (
-                        <div key={index} className="item">
-                            <img src={item.pokemon} alt={`Pokemon ${index}`} />
-                        </div>
-                    ))}
-                    <button onClick={goBack}>Go Back</button>
-                </>
-            ) : (
-                <>
-                    <div>
-                        <h1 className="topics">Topics</h1>
-                        {topicList}
-                    </div>
-                    <button onClick={handleInventory}>Inventory</button>
-                </>
-            )}
+          <h2>Inventory</h2>
+          {inventory.map((item, index) => (
+            <div key={index} className="item">
+              <img src={item.pokemon} alt={`Pokemon ${index}`} />
+            </div>
+          ))}
+          <button onClick={goBack}>Go Back</button>
         </>
-    );
+      ) : (
+        <>
+          <div>
+            <h1 className="topics">Topics</h1>
+            {topicList}
+          </div>
+          <button onClick={handleInventory}>Inventory</button>
+        </>
+      )}
+    </>
+  );
 };
 
 export default Tasks;

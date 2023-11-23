@@ -6,10 +6,11 @@ import Topic from './model/Topic.js'
 import Inventory from './model/Inventory.js'
 import Message from './model/Message.js'
 import Reward from './model/Reward.js'
+import Results from './model/Results.js'
 
 
-mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/users")
-//mongoose.connect("mongodb+srv://tmsvktr:Mongoose4321@cluster0.zrj184d.mongodb.net/")
+//mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/users")
+mongoose.connect("mongodb+srv://vikiTest:vikiTest@cluster0.vkt396l.mongodb.net/users")
 
 const app = express()
 app.use(express.json())
@@ -40,18 +41,22 @@ app.post('/api/addNewTopic', (req, res) => {
 app.get('/api/topics', async (req, res) => {
     try {
         const topic = await Topic.find()
+        console.log(`topics: ${topic}`)
         res.json(topic)
-    } catch(error) {
+    } catch (error) {
         console.error(error)
     }
 })
 
 app.get('/api/words/:topic', (req, res) => {
+    console.log("kérés érkezett")
+    console.log(req.params.topic)
     const topic = req.params.topic;
 
     Word.find({ topic: topic })
         .then(words => {
             res.send(words);
+            console.log(words)
         })
         .catch(err => {
             console.error(err);
@@ -97,8 +102,24 @@ app.post('/api/reward', (req, res) => {
         .catch(error => console.error(error))
 })
 
+
+app.post('/api/results', (req, res) => {
+    console.log('kérés érkezett')
+    Results.create({
+        topic: req.body.topic,
+        numOfWrongAnswers: req.body.numOfWrongAnswers,
+        numOfRightAnswers: req.body.numOfRightAnswers,
+        createdAt: req.body.date,
+        wrongAnswers: req.body.wrongAnswers,
+        rightAnswers: req.body.rightAnswers
+    })
+        .then(results => res.send(results))
+        .catch(error => console.error(error))
+})
+
+
 app.get('/api/rewards', (req, res) => {
-    console.log("kérés érkezett")
+
     Reward.find()
         .then(reward => res.send(reward))
         .catch(error => console.error(error))
@@ -108,7 +129,7 @@ app.get('/api/words', async (req, res) => {
     try {
         const word = await Word.find()
         res.json(word)
-    } catch(error) {
+    } catch (error) {
         console.error(error)
     }
 })
@@ -153,13 +174,13 @@ app.get('/api/inventory', async (req, res) => {
     try {
         const inventory = await Inventory.find()
         res.json(inventory)
-    } catch(error) {
+    } catch (error) {
         console.error(error)
     }
 })
 
 app.post('/api/inventory', async (req, res) => {
-    try{
+    try {
         console.log(req.body);
         const pokemon = req.body.pokemon
         const created = Date.now()
@@ -170,7 +191,7 @@ app.post('/api/inventory', async (req, res) => {
         await item.save()
         res.json(item)
 
-    } catch(error) {
+    } catch (error) {
         console.error(error)
     }
 })
@@ -183,8 +204,8 @@ async function createWord() {
             hungarian: 'biciklizni',
             topic: 'sport',
             createdAt: Date.now()
-    });
-    console.log(word);
+        });
+        console.log(word);
     } catch (error) {
         console.error(error);
     }
@@ -196,8 +217,8 @@ async function createTopic() {
             topic: 'sport',
             pokemon: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
             createdAt: Date.now()
-    });
-    console.log(topic);
+        });
+        console.log(topic);
     } catch (error) {
         console.error(error);
     }

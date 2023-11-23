@@ -7,6 +7,7 @@ import LeaveMessage from "./components/LeaveMessage"
 import Rewards from "./components/Rewards"
 import Tasks from './components/Tasks'
 import Quiz from './components/Quiz'
+import Answear from './components/Answear'
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -24,10 +25,15 @@ function App() {
           <Route path="/home/LeaveMessage" element={<LeaveMessage />} />
           <Route path="/home/Rewards" element={<Rewards />} />
           <Route path="/home/Tasks" element={<Tasks />} />
-          <Route path="/home/Tasks/Quiz" element={<Quiz />} />
+          <Route path="/home/Tasks/Quiz/:selectedTopic" element={<Quiz />} />
+          <Route path="/home/Tasks/Answear/:selectedTopic" element={<Answear />} />
+
+
+
+
         </Routes>
       </BrowserRouter>
-      
+
     </div>
   )
 }
