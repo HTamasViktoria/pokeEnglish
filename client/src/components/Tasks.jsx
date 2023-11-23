@@ -2,17 +2,21 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 const Tasks = () => {
-
-
-
   const [topics, setTopics] = useState([]);
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [isInventory, setIsInventory] = useState(false);
+  const [messages, setMessages] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('/api/messages');
+      const data = await response.json();
+      setMessages(data);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,18 +37,16 @@ const Tasks = () => {
   }, []);
 
 
+
   const selectTask = (selectedTopic) => {
-    const isCompleted = topics.find((topic) => inventory.some((item) => item.pokemon === topic.url));
-
-    console.log(isCompleted);
-
-    if (isCompleted.name == selectedTopic) {
-      navigate(`/home/Tasks/Answear/${selectedTopic}`);
+    const isCompleted = inventory.find((item) => item.name === selectedTopic);
+  
+    if (isCompleted && isCompleted.name === selectedTopic) {
+      navigate(`/home/Tasks/Answer/${selectedTopic}`);
     } else {
       navigate(`/home/Tasks/Quiz/${selectedTopic}`);
     }
   };
-
 
   const handleInventory = () => {
     setIsInventory(true);
@@ -54,14 +56,27 @@ const Tasks = () => {
     setIsInventory(false);
   };
 
+  const handleDelete = async (messageId) => {
+    try {
+      const response = await fetch(`/api/message/${messageId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response);
+      setMessages((prevMessages) =>
+        prevMessages.filter((message) => message._id !== messageId)
+      );
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
+  }
+
   const topicList = topics.map((topic, index) => {
     const isCompleted = inventory.some((item) => item.pokemon === topic.url);
     return (
-      <div
-        key={index}
-        className={`selectTopic ${isCompleted ? "completed" : ""}`}
-        onClick={() => selectTask(topic.name)}
-      >
+      <div key={index} className={`selectTopic ${isCompleted ? "completed" : ""}`} onClick={() => selectTask(topic.name)}>
         <h2>{topic.name}</h2>
         reward:
         <img src={topic.url} alt={`Pokemon ${index}`} />
@@ -84,13 +99,19 @@ const Tasks = () => {
           <button onClick={goBack}>Go Back</button>
         </>
       ) : (
-        <>
+        <div>
+          {messages.map((message, index) => (
+            <div className="messages" key={index}>
+              <p>{message.text}</p>
+              <button className="close" onClick={() => handleDelete(message._id)}>x</button>
+            </div>
+          ))}
           <div>
             <h1 className="topics">Topics</h1>
             {topicList}
           </div>
           <button onClick={handleInventory}>Inventory</button>
-        </>
+        </div>
       )}
     </>
   );

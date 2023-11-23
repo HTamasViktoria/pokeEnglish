@@ -6,7 +6,7 @@ import Word from './Word'
 
 
 const Answear = () => {
-
+    const navigate = useNavigate();
     const { selectedTopic } = useParams()
     const [words, setWords] = useState([])
     const [actualWord, setActualWord] = useState({})
@@ -14,17 +14,16 @@ const Answear = () => {
     const [numOfFalseAnswers, setNumOfFalseAnswers] = useState(0)
     const [trueAnswers, setTrueAnswers] = useState([])
     const [falseAnswers, setFalseAnswers] = useState([])
-    const [finish, setFinish] = useState([])
+    const [finish, setFinish] = useState(false)
+
 
 
     useEffect(() => {
-        console.log(selectedTopic)
         fetch(`/api/words/${selectedTopic}`, {
             method: 'GET'
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setWords(data);
 
                 setActualWord(data[0])
@@ -38,14 +37,29 @@ const Answear = () => {
 
 
 
-    useEffect(() => {
-        console.log("useeffect indul");
 
-        if (finish === true) {
-            const trueAnswersString = trueAnswers.join(', ');
-            const falseAnswersString = falseAnswers.join(', ');
+    const giveAnswear = (englishSolution) => {
 
-            fetch('/api/results', {
+        if (actualWord.english === englishSolution) {
+            setTrueAnswers(prevTrueAnswers => [(`${actualWord.english} :${actualWord.hungarian} `), ...prevTrueAnswers])
+            setNumOfTrueAnswers(numOfTrueAnswers + 1)
+        } else {
+            setNumOfFalseAnswers(numOfFalseAnswers + 1)
+            setFalseAnswers(prevFalseAnswers => [(`${actualWord.english} :${actualWord.hungarian} `), ...prevFalseAnswers])
+
+        }
+        setActualWord(words[words.indexOf(actualWord) + 1]);
+    }
+
+    const OKHandler = async (e) => {
+        console.log("ok handler runs")
+        e.preventDefault();
+
+        const trueAnswersString = trueAnswers.join(', ');
+        const falseAnswersString = falseAnswers.join(', ');
+
+        try {
+            const response = await fetch('/api/results', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -58,35 +72,27 @@ const Answear = () => {
                     wrongAnswers: falseAnswersString,
                     rightAnswers: trueAnswersString,
                 })
-            })
-                .then(response => console.log(response))
-                .catch(error => console.error(error));
+            });
+            if (response.ok) {
+                console.log('Results successfully submitted.');
+                navigate(`/home/Tasks/`)
+            } else {
+                console.error('Failed to submit results. Server returned:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error occurred while submitting results:', error);
         }
-    }, [finish]);
+    };
 
-
-    const giveAnswear = (englishSolution) => {
-
-        if (actualWord.english === englishSolution) {
-            setTrueAnswers(prevTrueAnswers => [(`${actualWord.english} :${actualWord.hungarian} `), ...prevTrueAnswers])
-            setNumOfTrueAnswers(numOfTrueAnswers + 1)
-        } else {
-            setNumOfFalseAnswers(numOfFalseAnswers + 1)
-            setFalseAnswers(prevFalseAnswers => [(`${actualWord.english} :${actualWord.hungarian} `), ...prevFalseAnswers])
-
-        }
-        if ((numOfFalseAnswers + numOfTrueAnswers) === words.length) { setFinish([1, 2]) }
-        //words.indexOf(actualWord) == words.length - 1
-
-        setActualWord(words[words.indexOf(actualWord) + 1]);
-    }
 
     return (
         <>
+            <NavBar/>
             {(actualWord === undefined || words.length === 0) && (numOfFalseAnswers > 0 || numOfTrueAnswers > 0) ? (
                 <>
                     <div>
                         You finished this test. Good answers: {numOfTrueAnswers}, wrong answers: {numOfFalseAnswers}
+                        <button onClick={OKHandler}>OK</button>
                     </div>
                 </>
             ) : (

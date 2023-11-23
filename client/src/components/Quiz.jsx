@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./Navbar";
-
 import { useNavigate, useParams } from "react-router-dom";
 
 
-
-
 const Quiz = () => {
-    const { selectedTopic } = useParams()
-
     const [tasks, setTasks] = useState([])
     const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     const [completed, setCompleted] = useState(false)
@@ -17,24 +12,40 @@ const Quiz = () => {
     const [correctOverall, setCorrectOverall] = useState(false)
     const [topics, setTopics] = useState([])
     const navigate = useNavigate();
-    const animalNames = [
-        'Dog', 'Cat', 'Fish', 'Bird', 'Elephant', 'Monkey', 'Turtle',
-        'Penguin', 'Koala', 'Dolphin', 'Panda', 'Lion', 'Giraffe',
-        'Butterfly', 'Frog', 'Rabbit', 'Bear', 'Owl', 'Duck', 'Horse',
-        'Chicken', 'Sheep', 'Cow', 'Mouse', 'Snake', 'Gorilla', 'Tiger',
-        'Fox', 'Zebra', 'Pig', 'Deer', 'Elephant Seal', 'Kangaroo', 'Ostrich',
-        'Pig', 'Squirrel', 'Hedgehog', 'Ladybug', 'Bee', 'Snail', 'Ant',
-        'Caterpillar', 'Dragonfly', 'Spider', 'Bat', 'Cheetah', 'Jaguar',
-        'Leopard', 'Hippopotamus'
+    const { selectedTopic } = useParams()
+    let reward = null
+    
+
+    const easyWords = [
+        "apple", "banana", "cat", "dog", "elephant", "frog", "goat", "hat", "igloo", "jelly",
+        "kite", "lion", "moon", "nest", "orange", "penguin", "queen", "rainbow", "sun", "turtle",
+        "umbrella", "van", "watermelon", "xylophone", "yellow", "zebra", "ant", "bird", "cake", "duck",
+        "egg", "fish", "grape", "house", "ice cream", "juice", "key", "lemon", "mango", "notebook",
+        "owl", "puzzle", "quilt", "robot", "star", "train", "unicorn", "volcano", "windmill", "xylophone",
+        "yogurt", "zipper", "bear", "carrot", "dinosaur", "dragon", "flower", "guitar", "hammer", "island",
+        "jigsaw", "kangaroo", "lamp", "mailbox", "noodle", "octopus", "piano", "quack", "rocket", "snail",
+        "tiger", "umbrella", "vase", "whale", "xylograph", "yo-yo", "zeppelin", "astronaut", "butterfly",
+        "caterpillar", "dolphin", "envelope", "firefly", "garden", "hamburger", "iceberg", "jungle", "koala",
+        "lighthouse", "muffin", "nightingale", "ocean", "parrot", "quilt", "raindrop", "squirrel", "telescope",
+        "unicorn", "vampire", "waffle", "xylograph", "yarn", "zeppelin", "alligator", "balloon", "cupcake",
+        "daisy", "eagle", "feather", "giraffe", "honey", "island", "jellyfish", "kiwi", "leopard", "marshmallow",
+        "necklace", "olive", "penguin", "quilt", "rainbow", "sandcastle", "teapot", "umbrella", "vase", "whale",
+        "xylophone", "yo-yo", "zebra", "apple", "banana", "cat", "dog", "elephant", "frog", "goat", "hat", "igloo",
+        "jelly", "kite", "lion", "moon", "nest", "orange", "penguin", "queen", "rainbow", "sun", "turtle", "umbrella",
+        "van", "watermelon", "xylophone", "yellow", "zebra", "ant", "bird", "cake", "duck", "egg", "fish", "grape",
+        "house", "ice cream", "juice", "key", "lemon", "mango", "notebook", "owl", "puzzle", "quilt", "robot", "star",
+        "train", "unicorn", "volcano", "windmill", "xylophone", "yogurt", "zipper", "bear", "carrot", "dinosaur", "dragon",
+        "flower", "guitar", "hammer", "island", "jigsaw", "kangaroo", "lamp", "mailbox", "noodle", "octopus", "piano",
+        "quack", "rocket", "snail", "tiger", "umbrella", "vase", "whale", "xylograph", "yo-yo", "zeppelin", "astronaut",
+        "butterfly", "caterpillar", "dolphin", "envelope", "firefly", "garden", "hamburger", "iceberg", "jungle", "koala",
+        "lighthouse", "muffin", "nightingale", "ocean", "parrot", "quilt", "raindrop", "squirrel", "telescope", "unicorn",
+        "vampire", "waffle", "xylograph", "yarn", "zeppelin", "alligator", "balloon", "cupcake", "daisy", "eagle", "feather",
+        "giraffe", "honey", "island", "jellyfish", "kiwi", "leopard", "marshmallow", "necklace", "olive", "penguin", "quilt",
+        "rainbow", "sandcastle", "teapot", "umbrella", "vase", "whale", "xylophone", "yo-yo", "zebra"
     ]
+   
 
-    const sportNames = ["Basketball", "Baseball", "Tennis", "Swimming", "Gymnastics", "Volleyball",
-        "Golf", "Running", "Skating", "Skiing", "Skating", "Table Tennis", "Badminton", "Karate", "Surfing",
-        "Skateboarding", "Archery", "Softball", "Cricket", "Horseback", "Judo", "Fencing", "Trampoline",
-        "Canoeing", "Wrestling", "Climbing", "Frisbee", "TaeKwonDo"]
-
-
-    function getRandomElements(array, animal, n) {
+    const getRandomElements = (array, animal, n) => {
         const shuffledArray = array.slice().sort(() => 0.5 - Math.random());
         const filteredArray = shuffledArray.filter(element => element !== animal);
         const randomAnimals = [animal, ...filteredArray.slice(0, n - 1)];
@@ -43,33 +54,38 @@ const Quiz = () => {
     }
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchWords = async () => {
             const response = await fetch(`/api/words/${selectedTopic}`);
             const data = await response.json();
             setTasks(data);
             const hungarianNamesArray = data.map((task) => task.hungarian);
             setHungarianNames(hungarianNamesArray);
         };
-
-        fetchData();
+    
+        fetchWords();
     }, []);
 
     const handleClick = (clicked, correctEnglish) => {
+        //Check if the clicked animal is the correct one
         const isCorrect = clicked === correctEnglish;
-
+    
+        //Update the answers state with the new answer
         setAnswers((prevAnswers) => [
             ...prevAnswers,
             { clicked, correctEnglish, isCorrect },
         ]);
-
+    
+        //Move to the next task by updating the currentTaskIndex
         setCurrentTaskIndex((prevIndex) => prevIndex + 1);
-
+    
+        // Check if all tasks are completed
         if (currentTaskIndex + 1 >= tasks.length) {
+            // Check if all answers are correct
             setAnswers((prevAnswers) => {
                 const allCorrect = prevAnswers.every((answer) => answer.isCorrect);
                 setCorrectOverall(allCorrect);
                 setCompleted(true);
-                setCurrentTaskIndex(0);
+                setCurrentTaskIndex(0); // Reset the task index for the next quiz
                 return prevAnswers;
             });
         }
@@ -89,13 +105,18 @@ const Quiz = () => {
         fetchData()
     }, [])
 
+    for(const topic of topics) {
+        if(topic.name === selectedTopic) {
+            reward = topic
+        }
+    }
+
     useEffect(() => {
         if (completed) {
             const allCorrect = answers.every((answer) => answer.isCorrect);
             setCorrectOverall(allCorrect);
-
             if (allCorrect) {
-                const pokemonData = { pokemon: topics[0].url };
+                const pokemonData = { name: reward.name, pokemon: reward.url };
                 fetch('/api/inventory', {
                     method: 'POST',
                     headers: {
@@ -103,17 +124,16 @@ const Quiz = () => {
                     },
                     body: JSON.stringify(pokemonData),
                 })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        console.log('POST request successful', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error making POST request', error);
-                    });
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('POST request successful', data);
+                })
+                .catch((error) => {
+                    console.error('Error making POST request', error);
+                });
             }
-
+    
             setCompleted(true);
-            setCurrentTaskIndex(0);
         }
     }, [completed, answers, topics]);
 
@@ -121,10 +141,8 @@ const Quiz = () => {
         navigate(`/home/Tasks/`);
     };
 
-
-
     const currentTask = tasks[currentTaskIndex];
-    const randomAnimals = getRandomElements(animalNames, currentTask?.english, 4);
+    const randomAnimals = getRandomElements(easyWords, currentTask?.english, 4);
     return (
         <>
             {completed ? (
@@ -133,12 +151,9 @@ const Quiz = () => {
                     <div>
                         <h2>Results</h2>
                         {answers.map((answer, index) => (
-                            <div
-                                key={index}
-                                className={`answer ${answer.isCorrect ? "correct" : "wrong"}`}
-                            >
+                            <div key={index} className={`answer ${answer.isCorrect ? "correct" : "wrong"}`}>
                                 <p>
-                                    {answer.clickedAnimal} = {hungarianNames[index]} -{" "}
+                                    {answer.clicked} = {hungarianNames[index]} -{" "}
                                     {answer.isCorrect ? "Correct!" : "Wrong!"}
                                 </p>
                             </div>
@@ -146,7 +161,7 @@ const Quiz = () => {
                         {correctOverall ? (
                             <>
                                 <p>Congratulations you won:</p>
-                                <img src={topics[0].url} />
+                                <img src={reward.url}/>
                                 <button onClick={selectTask} >Tasks</button>
                             </>
                         ) : (
@@ -164,11 +179,7 @@ const Quiz = () => {
                         <h2 className="hungarian">{currentTask?.hungarian}</h2>
                         <div className="animals-container">
                             {randomAnimals.map((animal, index) => (
-                                <div
-                                    key={index}
-                                    className="animal"
-                                    onClick={() => handleClick(animal, currentTask?.english)}
-                                >
+                                <div key={index} className="animal" onClick={() => handleClick(animal, currentTask?.english)}>
                                     <p>{animal}</p>
                                 </div>
                             ))}

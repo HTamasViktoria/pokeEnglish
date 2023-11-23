@@ -46,7 +46,7 @@
 
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   position: fixed;
   top: 0;
   left: 0;
@@ -71,7 +71,7 @@
   align-items: center;
   transition: transform 0.3s;
   position: relative;
-  top: -150px;
+  top: -50px;
 }
 
 .selectTopic:hover{
@@ -81,7 +81,7 @@
 
 .topics{
   position: relative;
-  top:-200px;
+  top:-220px;
   left:36%
 }
 
@@ -155,4 +155,32 @@
 
 #pokeselect {
   width: 300px;
+}
+
+.messages {
+  width: 850px;
+  height: 40px;
+  border: 1px solid #ccc;
+  margin: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  background-color: rgba(250, 235, 215, 0.849);
+  color: black;
+  padding: 0 10px; 
+}
+
+.close {
+  background-color: #ff6666;
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 6px 6px;
+  font-size: 3px;
+}
+
+.close:hover {
+  background-color: #cc0000; 
 }

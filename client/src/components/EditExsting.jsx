@@ -8,6 +8,9 @@ const EditExisting = () => {
     const [modifiedEnglish, setModifiedEnglish] = useState("")
     const [modifiedHungarian, setModifiedHungarian] = useState("")
     const [url, setUrl] = useState("")
+    const [topic, setTopic] = useState('')
+    const [hungarian, setHungarian] = useState('')
+    const [english, setEnglish] = useState('')
 
     useEffect(() => {
         fetch('/api/topics', {
@@ -23,17 +26,16 @@ const EditExisting = () => {
         const topic = e.target.id
         const url = e.target.className;
         setUrl(url)
+        setTopic(topic)
         fetch(`/api/words/${topic}`, {
             method: 'GET'
         }).then(response => response.json())
             .then(data => setWords(data))
             .catch(error => console.error(error))
-
     }
 
     const editSubmit = (e) => {
         e.preventDefault()
-
         fetch(`/api/word/${e.target.id}`, {
             method: 'PUT',
             headers: {
@@ -47,11 +49,7 @@ const EditExisting = () => {
             .then(response => console.log(response))
             //valahogy a submitról levenni a kijelölést
             .catch(error => console.error(error))
-
-
-
     }
-
 
     const englishHandler = (e) => {
         setModifiedEnglish(e.target.value)
@@ -63,11 +61,33 @@ const EditExisting = () => {
         if (modifiedEnglish === "") { setModifiedEnglish(e.target.id) }
     }
 
+    const handleSubmitNew = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await fetch('/api/addnew', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ english, hungarian, topic })
+          })
+          const responseData = await response.json()
+          setWords([...words, responseData])
+          console.log(responseData);
+        } catch (error) {
+          console.error(error)
+        }
+    }
+
     return (isEditing ? (<div>{words.map((word) => <form id={word._id} onSubmit={editSubmit} key={word._id}>
         <input id={word.english} placeholder={word.hungarian} onChange={hungarianHandler} /> -
         <input id={word.hungarian} placeholder={word.english} onChange={englishHandler} />
         <button type="submit">Submit</button>
     </form>)}
+        <p>or add a new word</p>
+        <form className='wordForm' onSubmit={handleSubmitNew}>
+            <input id='newWord' placeholder="hungarian" onChange={(e) => setHungarian(e.target.value)} /> -
+            <input id='newWord' placeholder="english" onChange={(e) => setEnglish(e.target.value)} />
+            <button type="submit">Submit</button>
+        </form>
         <div><img src={url} /></div>
     </div>) : (<div>
         {allTopics.map((topic, index) =>

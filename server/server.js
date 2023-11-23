@@ -9,8 +9,8 @@ import Reward from './model/Reward.js'
 import Results from './model/Results.js'
 
 
-//mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/users")
-mongoose.connect("mongodb+srv://vikiTest:vikiTest@cluster0.vkt396l.mongodb.net/users")
+mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/users")
+//mongoose.connect("mongodb+srv://vikiTest:vikiTest@cluster0.vkt396l.mongodb.net/users")
 
 const app = express()
 app.use(express.json())
@@ -102,6 +102,13 @@ app.post('/api/reward', (req, res) => {
         .catch(error => console.error(error))
 })
 
+app.get('/api/rewards', (req, res) => {
+
+    Reward.find()
+        .then(reward => res.send(reward))
+        .catch(error => console.error(error))
+})
+
 
 app.post('/api/results', (req, res) => {
     console.log('kérés érkezett')
@@ -114,14 +121,6 @@ app.post('/api/results', (req, res) => {
         rightAnswers: req.body.rightAnswers
     })
         .then(results => res.send(results))
-        .catch(error => console.error(error))
-})
-
-
-app.get('/api/rewards', (req, res) => {
-
-    Reward.find()
-        .then(reward => res.send(reward))
         .catch(error => console.error(error))
 })
 
@@ -182,9 +181,11 @@ app.get('/api/inventory', async (req, res) => {
 app.post('/api/inventory', async (req, res) => {
     try {
         console.log(req.body);
+        const name = req.body.name
         const pokemon = req.body.pokemon
         const created = Date.now()
         const item = new Inventory({
+            name,
             pokemon,
             created
         })
