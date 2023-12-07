@@ -44,21 +44,23 @@ const ResultSelect = (props) => {
                             <h3>{item.createdAt.slice(0, 10)}</h3>
                             <h3>{item.percentage} %</h3>
                             <h1>{item.wrongAnswers}</h1>
-                            <label>
-                                Choose a month:
-                                <select value={toShowasSelected} onChange={selectHandler}>
-                                    {months.map((month) => (
-                                        <option key={month} value={month}>
-                                            {month}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-                            <button onClick={goBackHandler}>Go Back</button>
+                            <form className="result-select">
+                                <label>
+                                    Choose a month:
+                                    <select value={toShowasSelected} onChange={selectHandler}>
+                                        {months.map((month) => (
+                                            <option key={month} value={month}>
+                                                {month}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <button onClick={goBackHandler}>Go Back</button>
+                            </form>
                         </div>
                     ))}
                 </>
-            ) : (
+            ) : (<form className="result-select">
                 <label>
                     Choose a month:
                     <select value={toShowasSelected} onChange={selectHandler}>
@@ -69,6 +71,7 @@ const ResultSelect = (props) => {
                         ))}
                     </select>
                 </label>
+            </form>
             )}
         </>
     );

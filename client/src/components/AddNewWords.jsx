@@ -24,36 +24,30 @@ const AddNewWords = () => {
         "scorbunny"
     ];
 
-
-
-    //////////////////////////////////////////////////////////lekéri az összes poké 1 db képét
     useEffect(() => {
         const fetchData = async () => {
             const pokeImageArray = [];
-    
+
             for (let pokemon of pokemonArray) {
                 const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
                 const data = await response.json();
-                
+
                 const imageObject = {
                     default: data.sprites.front_default,
                     shiny: data.sprites.front_shiny
                 };
-    
+
                 pokeImageArray.push(imageObject);
             }
-    
+
             setPokeImages(pokeImageArray);
-            
+
         };
-    
+
         fetchData();
     }, []);
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    /////////////////////////////////////////////////////////handling the data coming from Addnew, where 
-    //user can choose new topic name and pokemon
     const newHandler = (english, hungarian) => {
         console.log(english)
         console.log(hungarian)
@@ -78,10 +72,17 @@ const AddNewWords = () => {
             .catch(error => console.error(error))
 
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+
+    const goBackHandler = (direction) => {
+        setEditExisting(direction)
+    }
+
+    const addnewGoBackHandler = (direction) => {
+        setAddnew(direction)
+    }
 
     return (
         <>
@@ -95,9 +96,9 @@ const AddNewWords = () => {
             )}
 
             {editExisting ? (
-                <EditExisting />
+                <EditExisting onGoBackHandler={goBackHandler} />
             ) : addnew ? (
-                <Addnew images={pokeImages} />
+                <Addnew images={pokeImages} onGoBack={addnewGoBackHandler} />
             ) : (
                 <>
                     <button className="action-button" onClick={() => setEditExisting(true)}>

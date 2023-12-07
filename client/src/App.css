@@ -1,9 +1,11 @@
-
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.wrongs {
+  margin-top: 2em;
 }
 
 .logo {
@@ -12,6 +14,14 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+
+}
+
+
 
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cff);
@@ -45,6 +55,12 @@
   color: #888;
 }
 
+.result-select {
+  position: fixed;
+  right: 10em;
+  top: 20em;
+
+}
 
 .navbar {
   display: flex;
@@ -54,25 +70,26 @@
   left: 0;
   right: 0;
   width: 100%;
-  background-color: #333; 
-  padding: 10px; 
+  background-color: #333;
+  padding: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 .navbar a {
   text-decoration: none;
   color: white;
-  padding: 10px 15px; 
-  border-radius: 5px; 
-  transition: background-color 0.3s ease; 
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .navbar a:hover {
-  background-color: #555; 
+  background-color: #555;
 }
 
-.selectTopic{
-  width:170px;
+.selectTopic {
+  width: 170px;
   height: 190px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -89,12 +106,13 @@
   cursor: pointer;
 }
 
-.selectTopic:hover{
+.selectTopic:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
-.selectRewardLow{
-  width:100px;
+
+.selectRewardLow {
+  width: 100px;
   height: 100px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -111,8 +129,8 @@
   cursor: pointer;
 }
 
-.reward{
-  width:170px;
+.reward {
+  width: 170px;
   height: 100px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -129,8 +147,8 @@
   cursor: pointer;
 }
 
-.invPokemons{
-  width:100px;
+.invPokemons {
+  width: 100px;
   height: 100px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -147,9 +165,9 @@
   cursor: pointer;
 }
 
-.claimedReward{
+.claimedReward {
   color: black;
-  width:100px;
+  width: 100px;
   height: 100px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -167,15 +185,15 @@
 }
 
 .pokeSize {
-  width: 120px; 
-  height: auto; 
+  width: 120px;
+  height: auto;
   image-rendering: pixelated
 }
 
 
 
-.selectReward{
-  width:100px;
+.selectReward {
+  width: 100px;
   height: 100px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -205,18 +223,18 @@
 .topics {
   position: relative;
   top: -220px;
-  left: 50%; /* Center the element horizontally */
-  transform: translateX(-50%); /* Adjust to center properly */
-  text-align: center; /* Center the text inside */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .animals-container {
   display: flex;
-  justify-content: space-around; 
+  justify-content: space-around;
 }
 
 .animal {
-  width: 120px; 
+  width: 120px;
   height: 60px;
   border: 1px solid #ccc;
   background-color: rgba(251, 255, 0, 0.274);
@@ -226,17 +244,17 @@
   transition: transform 0.3s;
 }
 
-.animal:hover{
+.animal:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
 
 .hungarian {
-  text-align: center; 
+  text-align: center;
 }
 
-.task{
-  width:1100px;
+.task {
+  width: 1100px;
   height: 150px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -247,11 +265,11 @@
   transition: transform 0.3s;
 }
 
-.selected{
+.selected {
   background-color: green;
 }
 
-.answer{
+.answer {
   width: 500px;
   height: 60px;
   border: 1px solid #ccc;
@@ -274,7 +292,7 @@
   background-color: #ff00005d;
 }
 
-.completed{
+.completed {
   background-color: green;
 }
 
@@ -290,15 +308,15 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   background-color: rgba(250, 235, 215, 0.849);
   color: black;
-  padding: 0 10px; 
+  padding: 0 10px;
 }
 
 .close {
   background-color: #ff6666;
-  color: white; 
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -307,7 +325,7 @@
 }
 
 .close:hover {
-  background-color: #cc0000; 
+  background-color: #cc0000;
 }
 
 .messages-container {
@@ -320,7 +338,7 @@
   top: 50px;
 }
 
-.inventorybtn{
+.inventorybtn {
   position: relative;
   left: 45%;
   margin-right: 10px;
@@ -437,8 +455,8 @@
   position: relative;
   left: 36%;
   margin-right: 10px;
-  padding: 15px; 
-  font-size: 20px; 
+  padding: 15px;
+  font-size: 20px;
   background-color: #4caf50;
   color: white;
   border: none;
@@ -450,7 +468,7 @@
   background-color: #45a049;
 }
 
-#btn{
+#btn {
   margin-right: 10px;
   padding: 10px;
   background-color: #4caf50;
@@ -459,45 +477,46 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
 #btn:hover {
   background-color: #45a049;
 }
 
-.pokeContainer{
+.pokeContainer {
   display: flex;
   justify-content: space-evenly;
   gap: 50px;
 }
 
-.editP{
+.editP {
   font-size: 20px;
   background-color: #45a04900;
 }
 
 .editP img {
-  width: 150px; 
-  height: 150px; 
+  width: 150px;
+  height: 150px;
   image-rendering: pixelated
 }
 
-.txt{
+.txt {
   font-size: 20px;
   position: relative;
   left: 25%;
 }
 
-.move{
+.move {
   position: relative;
   left: 10px;
 }
 
-.topicForm{
+.topicForm {
   margin: 10px;
 }
 
-.Preward{
-  width: 150px; 
-  height: 150px; 
+.Preward {
+  width: 150px;
+  height: 150px;
   image-rendering: pixelated;
   position: relative;
   left: 25%;
@@ -506,7 +525,7 @@
 .nTopic {
   position: absolute;
   transform: translateX(140%);
-  top:70px;
+  top: 70px;
 }
 
 .pokeList {
@@ -516,8 +535,8 @@
   gap: 10px;
 }
 
-.poke{
-  width:100px;
+.poke {
+  width: 100px;
   height: 100px;
   border: 1px solid #ccc;
   padding: 16px;
@@ -532,104 +551,99 @@
   cursor: pointer;
 }
 
-.poke:hover{
+.poke:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
 
-.moveIt{
+.moveIt {
   font-size: 25px;
   position: relative;
-  left:46%;
+  left: 46%;
 }
 
-.selectedP{
+.selectedP {
   background-color: #45a049;
 }
 
-.Tname{
+.Tname {
   position: relative;
-  left:40%;
-  top:-30px;
+  left: 40%;
+  top: -30px;
   font-size: 20px;
-  
+
 }
 
-.txtt{
+.txtt {
   font-size: 25px;
   position: relative;
-  top:-150px
+  top: -150px
 }
 
-.addingNew{
+.addingNew {
   text-align: center;
   position: relative;
-  bottom:80px;
+  bottom: 80px;
 }
 
-.pkmn{
-  width: 150px; 
-  height: 150px; 
+.pkmn {
+  width: 150px;
+  height: 150px;
   image-rendering: pixelated;
 }
 
-.frm{
+.frm {
   font-size: 20px;
 }
 
-.rslt{
+.rslt {
   text-align: center;
 }
 
-.rsltp{
+.rsltp {
   position: relative;
   left: 37%;
-  width: 150px; 
-  height: 150px; 
+  width: 150px;
+  height: 150px;
   image-rendering: pixelated;
 }
 
-.rsltb{
+.rsltb {
   position: relative;
   left: 17%;
 }
 
-.rsltc{
+.rsltc {
   position: relative;
   left: 37%
 }
 
-.middle{
+.middle {
   text-align: center;
 }
 
-.cim{
+.cim {
   font-size: 25px;
   position: relative;
-  bottom:250px
+  bottom: 250px
 }
 
-.msg{
+.msg {
   position: relative;
-  top:-100px;
+  top: -100px;
 }
 
-.ok{
+.ok {
   position: relative;
-  top:40px;
-  right:220px
+  top: 40px;
+  right: 220px
 }
 
 .selectTopic.gold-bg {
   background-color: gold;
 }
 
-.topicsTable{
+.topicsTable {
   position: relative;
   top: 100px;
 }
-
-
-
-
-

@@ -14,7 +14,7 @@ const Addnew = (props) => {
       .then(data => setPokeImages(data))
       .catch(error => console.error(error))
   }, [])
-console.log(chosenPoke);
+  console.log(chosenPoke);
 
 
   const topicSubmitHandler = (e) => {
@@ -67,7 +67,9 @@ console.log(chosenPoke);
   const goBackHandler = () => {
     setErrorMessage("")
   }
-
+  const addnewGoBackHandler = () => {
+    props.onGoBack(false)
+  }
 
   return (
     <div>
@@ -84,37 +86,39 @@ console.log(chosenPoke);
             <>
               <h1 className="nTopic">Add new topic</h1>
               <div className='topicsTable' >
-              <form onSubmit={topicSubmitHandler}>
-                <label className="Tname">
-                  Topic name:
-                  <input type="text" onChange={(e) => setTopic(e.target.value)} />
-                </label>
-                <label>
-                  <div className="pokeList">
-                    {pokeImages.map((pokemon, index) => (
-                      <div
-                        id={pokemon.name}
-                        key={pokemon._id}
-                        className={`poke ${
-                          chosenPoke.default === pokemon.name ? 'selectedP' : ''
-                        }`}
-                      >
-                        <img
-                          onClick={() => setChosenPoke(props.images.find((img) => img.default === pokemon.name))}
+                <form onSubmit={topicSubmitHandler}>
+                  <label className="Tname">
+                    Topic name:
+                    <input type="text" onChange={(e) => setTopic(e.target.value)} />
+                  </label>
+                  <label>
+                    <div className="pokeList">
+                      {pokeImages.map((pokemon, index) => (
+                        <div
                           id={pokemon.name}
-                          src={pokemon.name}
-                          alt={`Pokemon ${index}`}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </label>
-                <button type="submit" id="btn" className="moveIt">
-                  Add Topic
-                </button>
-              </form>
+                          key={pokemon._id}
+                          className={`poke ${chosenPoke.default === pokemon.name ? 'selectedP' : ''
+                            }`}
+                        >
+                          <img
+                            onClick={() => setChosenPoke(props.images.find((img) => img.default === pokemon.name))}
+                            id={pokemon.name}
+                            src={pokemon.name}
+                            alt={`Pokemon ${index}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </label>
+                  <button type="submit" id="btn" className="moveIt">
+                    Add Topic
+                  </button>
+                  <button onClick={addnewGoBackHandler}>Go Back</button>
+                </form>
               </div>
+
             </>
+
           )}
         </>
       )}

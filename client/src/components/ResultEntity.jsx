@@ -15,12 +15,12 @@ const ResultEntity = (props) => {
 
     }
 
-    return (<div>
+    return (<div className="selectTopic">
         <h2>Topic:{props.data.topic}</h2>
-        <h4>Date of test:{props.data.createdAt.slice(0, 16).replace('T', ' ')}</h4>
-        <h4>Result of test:{props.data.percentage} %</h4>
+        <span>Date of test:{props.data.createdAt.slice(0, 16).replace('T', ' ')}</span>
+        <span>Result of test:{props.data.percentage} %</span>
         <button onClick={showTheWrongAnswers}>Wrong answers</button>
-        {showingWrongs ? (<>{props.data.wrongAnswers}</>) : (null)}
+        {showingWrongs ? (<div className="wrongs">{props.data.wrongAnswers}</div>) : (null)}
     </div>)
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const EditExisting = () => {
+const EditExisting = (props) => {
 
     const [allTopics, setAllTopics] = useState([])
     const [isEditing, setIsEditing] = useState(false)
@@ -57,13 +57,13 @@ const EditExisting = () => {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' }
             });
-    
+
             if (response.ok) {
                 setWords((prevWords) => prevWords.filter((word) => word._id !== id));
             } else {
                 console.error('Failed to delete the word');
             }
-        } catch(err) {
+        } catch (err) {
             console.error(err);
         }
     };
@@ -86,7 +86,7 @@ const EditExisting = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ english, hungarian, topic })
             });
-    
+
             if (response.ok) {
                 const responseData = await response.json();
                 setWords((prevWords) => [...prevWords, responseData]);
@@ -99,7 +99,14 @@ const EditExisting = () => {
         }
     };
 
-    return (isEditing ? (<div>{words.map((word) => <form id={word._id} onSubmit={editSubmit} key={word._id} className='topicForm' >
+
+    const goBackHandler = () => {
+        props.onGoBackHandler(false)
+    }
+
+
+
+    return (isEditing ? (<div className="messages-container">{words.map((word) => <form id={word._id} onSubmit={editSubmit} key={word._id} className='topicForm' >
         <input id={word.english} placeholder={word.hungarian} onChange={hungarianHandler} /> -
         <input id={word.hungarian} placeholder={word.english} onChange={englishHandler} />
         <button type="submit" id="btn" className='move'>Submit</button>
@@ -114,14 +121,14 @@ const EditExisting = () => {
         <div><img src={url} className='Preward' /></div>
     </div>) : (<div className='pokeContainer' >
         {allTopics.map((topic, index) =>
-            <div key={index} className='editP' >
+            <div key={index} className='selectTopic' >
                 <div key={topic.name}>
                     {topic.name}
                 </div>
                 <img src={topic.url.default} alt={topic.name} />
                 <button id={topic.name} className={topic.url.default} onClick={editHandler}>Edit</button>
             </div>)}
-    </div>)
+        <button onClick={goBackHandler}>Go Back</button></div>)
     )
 }
 

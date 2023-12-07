@@ -27,23 +27,25 @@ const AdminStats = () => {
     return (
         <>
             <NavBar />
-            {statistics.length > 2 && (<><ResultEntity data={statistics[statistics.length - 1]} />
+            {statistics.length > 2 && (<div className="container"><ResultEntity data={statistics[statistics.length - 1]} />
                 <ResultEntity data={statistics[statistics.length - 2]} />
-                <ResultEntity data={statistics[statistics.length - 3]} /></>)}
+                <ResultEntity data={statistics[statistics.length - 3]} /></div>)}
 
-            {statistics.length > 1 && statistics.length < 2 && (<><ResultEntity data={statistics[statistics.length - 1]} />
-                <ResultEntity data={statistics[statistics.length - 2]} /></>)}
-            {statistics.length > 0 && statistics.length < 1 && (<><ResultEntity data={statistics[statistics.length - 1]} /></>)}
+            {statistics.length > 1 && statistics.length < 2 && (<div className="container">
+                <ResultEntity data={statistics[statistics.length - 1]} />
+                <ResultEntity data={statistics[statistics.length - 2]} /></div>)}
+            {statistics.length > 0 && statistics.length < 1 && (<div className="container">
+                <ResultEntity data={statistics[statistics.length - 1]} /></div>)}
 
 
             <button onClick={showAllHandler}>Show all the test results</button>
-            {showingAll ? (<>{statistics.map((statistic) => <div key={statistic._id} >
-                <h1>Topic:{statistic.topic}</h1>
-                <h3>Date of the test:{statistic.createdAt}</h3>
-                <h3>Result of the test:{statistic.percentage} %</h3>
-                <h3>Wrong answers:{statistic.wrongAnswers}</h3>
+            {showingAll ? (<div className="result-container" >{statistics.map((statistic) => <div key={statistic._id} >
+                <h3>Topic:{statistic.topic}</h3>
+                <span>Date of the test:{statistic.createdAt}</span><br />
+                <span>Result of the test:{statistic.percentage} %</span><br />
+                <span>Wrong answers:{statistic.wrongAnswers}</span><br />
             </div>
-            )}</>) : (null)}
+            )}</div>) : (null)}
             <ResultSelect statistics={statistics} />
         </>
     );
