@@ -506,7 +506,7 @@
 .nTopic {
   position: absolute;
   transform: translateX(140%);
-  top:100px;
+  top:70px;
 }
 
 .pokeList {
@@ -621,8 +621,12 @@
 }
 
 .selectTopic.gold-bg {
-  /* Styling for both completed state with gold background */
   background-color: gold;
+}
+
+.topicsTable{
+  position: relative;
+  top: 100px;
 }
 
 

@@ -83,6 +83,7 @@ console.log(chosenPoke);
           ) : (
             <>
               <h1 className="nTopic">Add new topic</h1>
+              <div className='topicsTable' >
               <form onSubmit={topicSubmitHandler}>
                 <label className="Tname">
                   Topic name:
@@ -112,6 +113,7 @@ console.log(chosenPoke);
                   Add Topic
                 </button>
               </form>
+              </div>
             </>
           )}
         </>
