@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import Word from './Word'
+import Topic from "../../../server/model/Topic";
 
 
 
-const Answear = () => {
+const Answear = (props) => {
     const navigate = useNavigate();
     const { selectedTopic } = useParams()
     const [words, setWords] = useState([])
@@ -14,7 +15,9 @@ const Answear = () => {
     const [numOfFalseAnswers, setNumOfFalseAnswers] = useState(0)
     const [trueAnswers, setTrueAnswers] = useState([])
     const [falseAnswers, setFalseAnswers] = useState([])
-    const [finish, setFinish] = useState(false)
+    const [inventory, setInventory] = useState([])
+    const [reward, setReward] = useState(null)
+    const [user, setUser] = useState()
 
 
 
@@ -35,6 +38,38 @@ const Answear = () => {
             });
     }, []);
 
+    useEffect(() => {
+        const fetchInventory = async () => {
+            try {
+                const response = await fetch('/api/inventory');
+                const data = await response.json();
+                setInventory(data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`/api/users`);
+                const data = await response.json();
+                setUser(data.find((item) => item._id === props.user._id));
+            } catch(err) {
+                console.error(err)
+            }
+        }
+        fetchUsers()
+    
+        fetchInventory();
+    }, []);
+    
+    useEffect(() => {
+        const filtered = inventory.find((inv) => inv.name === selectedTopic);
+        setReward(filtered);
+    }, [inventory]);
+    
+    console.log(reward);
+
+
 
 
 
@@ -52,12 +87,13 @@ const Answear = () => {
     }
 
     const OKHandler = async (e) => {
-        console.log("ok handler runs")
         e.preventDefault();
-
-        const trueAnswersString = trueAnswers.join(', ');
-        const falseAnswersString = falseAnswers.join(', ');
-
+    
+        let trueAnswersString = ""
+        let falseAnswersString = ""
+        if (trueAnswers.length > 0) { trueAnswersString = trueAnswers.join(', ') } else { trueAnswersString = "" }
+        if (falseAnswers.length > 0) { falseAnswersString = falseAnswers.join(', ') } else { falseAnswersString = "" }
+    
         try {
             const response = await fetch('/api/results', {
                 method: 'POST',
@@ -66,21 +102,53 @@ const Answear = () => {
                 },
                 body: JSON.stringify({
                     topic: selectedTopic,
-                    numofWrongAnswers: numOfFalseAnswers,
+                    numOfWrongAnswers: numOfFalseAnswers,
                     numOfRightAnswers: numOfTrueAnswers,
-                    createdAt: Date.now(),
+                    createdAt: new Date(),
                     wrongAnswers: falseAnswersString,
                     rightAnswers: trueAnswersString,
+                    percentage: (numOfTrueAnswers / (numOfFalseAnswers + numOfTrueAnswers) * 100)
                 })
             });
+    
             if (response.ok) {
-                console.log('Results successfully submitted.');
-                navigate(`/home`)
+                if (numOfFalseAnswers === 0) {
+                    const inventoryIdToUpdate = reward._id
+                    console.log(reward._id);
+                    const patchResponse = await fetch(`/api/inventory/${inventoryIdToUpdate}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            bothCompleted: true
+                        })
+                    });
+                    const patchUser = await fetch(`/api/users/${user._id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            points: user.points + 2
+                        })
+                    });
+    
+                    if (patchResponse.ok && patchUser.ok) {
+                        props.setUser({ ...user, points: user.points + 2 })
+                        navigate(`/home`);
+                    } else {
+                        console.error(patchResponse.status, patchResponse.statusText);
+                    }
+                } else {
+                    console.log('Results successfully submitted, but not all answers are correct.');
+                    navigate(`/home`);
+                }
             } else {
-                console.error('Failed to submit results. Server returned:', response.status, response.statusText);
+                console.error(response.status, response.statusText);
             }
         } catch (error) {
-            console.error('Error occurred while submitting results:', error);
+            console.error(error);
         }
     };
 

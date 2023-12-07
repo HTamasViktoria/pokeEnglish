@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from "./Navbar"
 
-const Rewards = () => {
+const Rewards = (props) => {
 
     const [actualReward, setActualReward] = useState("")
+    const [actualPoints, setActualPoints] = useState("")
     const [rewards, setRewards] = useState([])
     const [lastReward, setLastReward] = useState("")
+    const user = props.user
 
     useEffect(() => {
         fetch('/api/rewards', {
@@ -18,6 +20,7 @@ const Rewards = () => {
 
     useEffect(() => {
         setActualReward("")
+        setActualPoints('')
         fetch('/api/rewards', {
             method: 'GET'
         })
@@ -36,21 +39,28 @@ const Rewards = () => {
             },
             body: JSON.stringify({
                 text: actualReward,
+                points: actualPoints,
                 createdAt: Date.now()
             })
         })
             .then(response => response.json())
-            .then(data => setLastReward(data.text))
+            .then(data => setLastReward(data))
     }
 
     return (<>
         <NavBar/>
         <div>Here you can create rewards for the topics difficult for your child.
         </div>
-        {rewards.map((reward) => <div key={reward._id}>{reward.text}</div>)}
+        {rewards.map((reward) => <div className={"reward"} key={reward._id}>
+            <p>{reward.text}</p>
+            <p>Points: {reward.points}</p>
+        </div>)}
         <form onSubmit={rewardSubmit}>
-            <label>Reward:
+            <label>Name:
                 <input type="text" value={actualReward} onChange={(e) => setActualReward(e.target.value)} />
+            </label>
+            <label>Points:
+                <input type="text" value={actualPoints} onChange={(e) => setActualPoints(e.target.value)} />
             </label>
             <button type="submit">Submit</button></form>
     </>

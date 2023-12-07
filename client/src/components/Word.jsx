@@ -12,7 +12,7 @@ const Word = (props) => {
 
     return (<div>
         <form onSubmit={handleSubmit}>
-            <label>{props.word.hungarian}: <input type="text" onChange={(e) => { setEnglishSolution(e.target.value) }} /></label>
+            <label>{props.word.hungarian}: <input type="text" required onChange={(e) => { setEnglishSolution(e.target.value) }} /></label>
             <button id='btn' >Submit</button>
         </form>
     </div>)

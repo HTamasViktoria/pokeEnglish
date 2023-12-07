@@ -1,11 +1,14 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-const Login = () => {
+const Login = (props) => {
 
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const navigate = useNavigate()
+    const [users, setUsers] = useState([])
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -18,14 +21,31 @@ const Login = () => {
             });
             const responseData = await response.json();
             if (responseData === 'Success') {
+                console.log('Login successful');
+                props.setIsLoggedIn(true);
+                const loggedInUser = users.find((user) => user.email === email)
+                props.setUser(loggedInUser)
                 navigate('/home');
-            } else {
-                console.log(responseData);
-            }
+              } else {
+                console.log('Login failed:', responseData);
+              }
         } catch (error) {
             console.error(error);
         }
     }
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch('/api/users')
+                const data = await response.json()
+                setUsers(data)
+            } catch(err) {
+                consolee.error(err)
+            }
+        }
+        fetchUsers()
+    }, [])
 
     return (
         <div className="login-container">

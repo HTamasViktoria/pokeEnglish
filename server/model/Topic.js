@@ -2,7 +2,10 @@ import mongoose from 'mongoose'
 const { Schema, model } = mongoose
 const topicSchema = new Schema({
     name: String,
-    url: String,
+    url: {
+        default: String,
+        shiny: String
+    },
     createdAt: Date
 })
 

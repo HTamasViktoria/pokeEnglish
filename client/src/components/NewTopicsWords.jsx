@@ -54,7 +54,7 @@ const NewTopicsWords = (props) => {
             <div className='addingNew' >
                 <h2 className='txttt' >Topic: {props.topic}</h2>
                 <div>
-                    <img className='pkmn' src={props.pokemon} />
+                    <img className='pkmn' src={props.pokemon.default} />
                 </div>
                 {wordsOfTopic.map((word) => <div  key={word}>{word.english} - {word.hungarian}</div>)}
                 {!addingNewWord ? (

@@ -6,10 +6,11 @@ import Topic from './model/Topic.js'
 import Inventory from './model/Inventory.js'
 import Message from './model/Message.js'
 import Reward from './model/Reward.js'
-import Results from './model/Results.js'
+import Result from './model/Result.js'
+import Images from './model/Images.js'
 
 
-mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/users")
+mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/final")
 //mongoose.connect("mongodb+srv://vikiTest:vikiTest@cluster0.vkt396l.mongodb.net/users")
 
 const app = express()
@@ -29,13 +30,47 @@ app.post('/api/addnew', async (req, res) => {
         })
 })
 
-app.post('/api/addNewTopic', (req, res) => {
-    Topic.create({
-        name: req.body.name,
-        url: req.body.url,
-        createdAt: req.body.createdAt,
-    })
-        .then(topic => console.log(topic))
+app.post('/api/addNewTopic', async (req, res) => {
+    const body = req.body
+    try {
+        const existing = await Topic.findOne({ name: req.body.name });
+
+        if (existing) {
+            console.log("Topic already existing")
+            return res.json({ error: "Existing topic name" });
+        }
+
+        const newTopic = await Topic.create({
+            name: req.body.name,
+            url: {
+                default: req.body.url.default,
+                shiny: req.body.url.shiny
+            },
+            createdAt: req.body.createdAt,
+        });
+
+        const imageToUpdate = await Images.findOne({ name: req.body.url.default });
+
+        if (imageToUpdate) {
+            imageToUpdate.occupied = true;
+            await imageToUpdate.save();
+        }
+
+        console.log("Topic added successfully:", newTopic);
+        res.json(newTopic);
+    } catch (error) {
+        console.error("Error adding topic:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+app.get('/api/images', async (req, res) => {
+    try {
+        const images = await Images.find({ occupied: false })
+        res.json(images)
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 app.get('/api/topics', async (req, res) => {
@@ -65,21 +100,42 @@ app.get('/api/words/:topic', (req, res) => {
 });
 
 app.put('/api/word/:id', (req, res) => {
-    const id = req.params.id
+    const id = req.params.id;
+
     Word.findById(id)
         .then(word => {
-            word.english = req.body.modifiedEnglish;
-            word.hungarian = req.body.modifiedHungarian
-            word.save()
-                .then(word => res.send(word))
-                .catch(error => console.error(error))
-        })
+            if (!word) {
+                return res.status(404).json({ error: 'Word not found' });
+            }
 
+            word.english = req.body.modifiedEnglish;
+            word.hungarian = req.body.modifiedHungarian;
+
+            return word.save();
+        })
+        .then(updatedWord => {
+            res.json(updatedWord);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        });
+});
+
+app.delete('/api/word/:id', async (req, res) => {
+    const id = req.params.id
+    try {   
+        const deleteWord = await Word.findByIdAndDelete(id)
+        res.json(deleteWord)
+    } catch(err) {
+        console.error(err)
+    }
 })
 
 app.post('/api/message', (req, res) => {
     Message.create({
         text: req.body.text,
+        user: req.body.user,
         createdAt: req.body.createdAt,
     })
         .then(message => res.send(message))
@@ -87,7 +143,6 @@ app.post('/api/message', (req, res) => {
 })
 
 app.get('/api/messages', (req, res) => {
-    console.log("kérés érkezett")
     Message.find()
         .then(messages => res.send(messages))
         .catch(error => console.error(error))
@@ -108,10 +163,22 @@ app.delete('/api/message/:id', async (req, res) => {
 app.post('/api/reward', (req, res) => {
     Reward.create({
         text: req.body.text,
+        points: req.body.points,
         createdAt: req.body.createdAt,
     })
         .then(reward => res.send(reward))
         .catch(error => console.error(error))
+})
+
+app.patch('/api/reward/:id', async (req, res) => {
+    const id = req.params.id
+    const updates = req.body
+    try {
+        const reward = await Reward.findByIdAndUpdate(id, updates, { new: true })
+        res.json(reward)
+    } catch(err) {
+        console.error(err)
+    }
 })
 
 app.get('/api/rewards', (req, res) => {
@@ -121,16 +188,30 @@ app.get('/api/rewards', (req, res) => {
         .catch(error => console.error(error))
 })
 
+app.get('/api/results', (req, res) => {
+    Result.find()
+        .sort({ createdAt: 1 })
+        .then(results => {
+            console.log(results);
+            res.send(results);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
 
 app.post('/api/results', (req, res) => {
-    console.log('kérés érkezett')
-    Results.create({
+
+    Result.create({
         topic: req.body.topic,
         numOfWrongAnswers: req.body.numOfWrongAnswers,
         numOfRightAnswers: req.body.numOfRightAnswers,
-        createdAt: req.body.date,
+        createdAt: req.body.createdAt,
         wrongAnswers: req.body.wrongAnswers,
-        rightAnswers: req.body.rightAnswers
+        rightAnswers: req.body.rightAnswers,
+        percentage: req.body.percentage
     })
         .then(results => res.send(results))
         .catch(error => console.error(error))
@@ -195,10 +276,12 @@ app.post('/api/inventory', async (req, res) => {
         console.log(req.body);
         const name = req.body.name
         const pokemon = req.body.pokemon
+        const bothCompleted = req.body.bothCompleted
         const created = Date.now()
         const item = new Inventory({
             name,
             pokemon,
+            bothCompleted,
             created
         })
         await item.save()
@@ -208,6 +291,43 @@ app.post('/api/inventory', async (req, res) => {
         console.error(error)
     }
 })
+
+app.patch('/api/inventory/:id', async (req, res) => {
+    try {
+        const itemId = req.params.id;
+        const updates = req.body;
+
+        const item = await Inventory.findByIdAndUpdate(itemId, updates, { new: true });
+
+        res.json(item);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/users', async (req, res) => {
+    try {
+        const users = await User.find()
+        res.json(users)
+    } catch(err) {
+        console.eerror(err)
+    }
+})
+
+app.patch('/api/users/:id', async (req, res) => {
+    try {
+        const itemId = req.params.id;
+        const updates = req.body;
+
+        const item = await User.findByIdAndUpdate(itemId, updates, { new: true });
+
+        res.json(item);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 async function createWord() {

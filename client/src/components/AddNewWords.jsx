@@ -13,32 +13,42 @@ const AddNewWords = () => {
     const [saved, setSaved] = useState(false)
     const [addedMessage, setAddedMessage] = useState("")
     const [pokeImages, setPokeImages] = useState([])
-    const [showAll, setShowAll] = useState(false)
 
     const [editExisting, setEditExisting] = useState(false)
     const [addnew, setAddnew] = useState(false)
 
     let pokemonArray = [
         "bulbasaur", "jigglypuff", "charizard", "blastoise", "teddiursa", "skitty", "squirtle", "togepi", "mew",
-        "pikachu", "meowth", "woobat", "caterpie", "vulpix", "zubat", "cutiefly"
+        "pikachu", "meowth", "woobat", "caterpie", "vulpix", "zubat", "cutiefly", "sneasel", "heracross",
+        "snubbull", "aipom", "totodile", "cyndaquil", "chikorita", "dragonite", "moltres", "magmar", "electabuzz",
+        "scorbunny"
     ];
+
 
 
     //////////////////////////////////////////////////////////lekéri az összes poké 1 db képét
     useEffect(() => {
         const fetchData = async () => {
-            const pokeImageArray = []
+            const pokeImageArray = [];
+    
             for (let pokemon of pokemonArray) {
-                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
-                const data = await response.json()
-                const url = data.sprites.front_default
-                pokeImageArray.push(url)
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
+                const data = await response.json();
+                
+                const imageObject = {
+                    default: data.sprites.front_default,
+                    shiny: data.sprites.front_shiny
+                };
+    
+                pokeImageArray.push(imageObject);
             }
-
-            setPokeImages(pokeImageArray)//egyből setter fgv is lehetne)
+    
+            setPokeImages(pokeImageArray);
+            
         };
+    
         fetchData();
-    }, [])
+    }, []);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

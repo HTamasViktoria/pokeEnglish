@@ -3,7 +3,7 @@ import NavBar from "./Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 
 
-const Quiz = () => {
+const Quiz = (props) => {
     const [tasks, setTasks] = useState([])
     const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     const [completed, setCompleted] = useState(false)
@@ -14,6 +14,7 @@ const Quiz = () => {
     const navigate = useNavigate();
     const { selectedTopic } = useParams()
     let reward = null
+    const [user, setUser] = useState()
     
 
     const easyWords = [
@@ -61,6 +62,16 @@ const Quiz = () => {
             const hungarianNamesArray = data.map((task) => task.hungarian);
             setHungarianNames(hungarianNamesArray);
         };
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`/api/users`);
+                const data = await response.json();
+                setUser(data.find((item) => item._id === props.user._id));
+            } catch(err) {
+                console.error(err)
+            }
+        }
+        fetchUsers()
     
         fetchWords();
     }, []);
@@ -116,13 +127,27 @@ const Quiz = () => {
             const allCorrect = answers.every((answer) => answer.isCorrect);
             setCorrectOverall(allCorrect);
             if (allCorrect) {
-                const pokemonData = { name: reward.name, pokemon: reward.url };
+                const pokemonData = { name: reward.name, pokemon: { default: reward.url.default, shiny: reward.url.shiny}, bothCompleted: false };
                 fetch('/api/inventory', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(pokemonData),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('POST request successful', data);
+                })
+                .catch((error) => {
+                    console.error('Error making POST request', error);
+                });
+                fetch(`/api/users/${user._id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({points: user.points + 1}),
                 })
                 .then((response) => response.json())
                 .then((data) => {
@@ -140,6 +165,7 @@ const Quiz = () => {
     const selectTask = () => {
         navigate(`/home`);
     };
+
 
     const currentTask = tasks[currentTaskIndex];
     const randomAnimals = getRandomElements(easyWords, currentTask?.english, 4);
@@ -161,7 +187,7 @@ const Quiz = () => {
                         {correctOverall ? (
                             <>
                                 <p className="rslt" >Congratulations you won:</p>
-                                <img className="rsltp" src={reward.url}/>
+                                <img className="rsltp" src={reward.url.default}/>
                                 <button onClick={selectTask} className="rsltb" id="btn" >Tasks</button>
                             </>
                         ) : (

@@ -1,12 +1,14 @@
 import mongoose from 'mongoose'
 const { Schema, model } = mongoose
-const resultsSchema = new Schema({
+
+const resultSchema = new Schema({
     topic: String,
     numOfWrongAnswers: Number,
     numOfRightAnswers: Number,
     createdAt: Date,
     wrongAnswers: String,
-    rightAnswers: String
+    rightAnswers: String,
+    percentage: Number,
 });
 
-export default model('Results', resultsSchema)
+export default model('Result', resultSchema)
