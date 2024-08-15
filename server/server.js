@@ -10,8 +10,9 @@ import Result from './model/Result.js'
 import Images from './model/Images.js'
 
 
-mongoose.connect("mongodb+srv://pdani1214:something1111@cluster0.vkt396l.mongodb.net/final")
-//mongoose.connect("mongodb+srv://vikiTest:vikiTest@cluster0.vkt396l.mongodb.net/users")
+mongoose.connect("mongodb+srv://<username>:<password>@<cluster-url>/<database-name>")
+
+
 
 const app = express()
 app.use(express.json())
