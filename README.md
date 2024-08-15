@@ -1,6 +1,6 @@
 # PokeEnglish
 
-An engaging app that helps parents and children make English vocabulary learning fun and effective using Pokémon!
+An engaging app that helps parents and children make English vocabulary learning fun and effective using pokemons!
 
 ## Table of Contents
 
