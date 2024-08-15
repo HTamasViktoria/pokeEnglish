@@ -27,7 +27,8 @@ const AdminStats = () => {
     return (
         <>
             <NavBar />
-            {statistics.length > 2 && (<div className="container"><ResultEntity data={statistics[statistics.length - 1]} />
+            {statistics.length > 2 && (<div className="container">
+                <ResultEntity data={statistics[statistics.length - 1]} />
                 <ResultEntity data={statistics[statistics.length - 2]} />
                 <ResultEntity data={statistics[statistics.length - 3]} /></div>)}
 

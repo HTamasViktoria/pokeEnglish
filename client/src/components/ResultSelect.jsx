@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 
 const ResultSelect = (props) => {
 
+    //material ui - grafikonok
+
     const [months, setMonths] = useState([])
     const [isSelected, setIsSelected] = useState(false)
     const [toShowasSelected, setToShowAsSelected] = useState("")

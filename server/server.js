@@ -30,7 +30,7 @@ app.post('/api/addnew', async (req, res) => {
         })
 })
 
-app.post('/api/addNewTopic', async (req, res) => {
+app.post('/api/addNewTopic', async (req, res) => {//api/topics
     const body = req.body
     try {
         const existing = await Topic.findOne({ name: req.body.name });
@@ -124,10 +124,10 @@ app.put('/api/word/:id', (req, res) => {
 
 app.delete('/api/word/:id', async (req, res) => {
     const id = req.params.id
-    try {   
+    try {
         const deleteWord = await Word.findByIdAndDelete(id)
         res.json(deleteWord)
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 })
@@ -176,7 +176,7 @@ app.patch('/api/reward/:id', async (req, res) => {
     try {
         const reward = await Reward.findByIdAndUpdate(id, updates, { new: true })
         res.json(reward)
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 })
@@ -310,7 +310,7 @@ app.get('/api/users', async (req, res) => {
     try {
         const users = await User.find()
         res.json(users)
-    } catch(err) {
+    } catch (err) {
         console.eerror(err)
     }
 })
